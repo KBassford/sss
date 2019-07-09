@@ -8,19 +8,19 @@ import (
 )
 
 // GenerateShares generates a number of shares which can only be recovered by the minimum number of shares
-func GenerateShares(minimum int, shares int, prime *big.Int) (*big.Int, []*utils.Point, error) {
-	poly := make([]*big.Int, minimum)
+func GenerateShares(threshold int, shares int, prime *big.Int) (*big.Int, []*utils.Point, error) {
+	poly := make([]*big.Int, threshold)
 	points := make([]*utils.Point, shares)
 
-	if minimum > shares {
+	if threshold > shares {
 		return nil, nil, errors.New("Minimum number of shares specified is greater than the total number of shares")
 	}
 
-	if minimum < 2 {
+	if threshold < 2 {
 		return nil, nil, errors.New("Minimum number of shares specified is greater than the total number of shares")
 	}
 
-	for i := 0; i < minimum; i++ { // should be i < shares.
+	for i := 0; i < threshold; i++ { // should be i < shares.
 		coefficients, e := utils.GenerateRandomBigInt(32)
 		if e != nil {
 			return nil, nil, e
