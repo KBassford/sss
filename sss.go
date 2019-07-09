@@ -4,7 +4,7 @@ import (
 	"errors"
 	"math/big"
 
-	"github.com/amousa11/sss/utils"
+	"github.com/KBassford/sss/utils"
 )
 
 // GenerateShares generates a number of shares which can only be recovered by the minimum number of shares
@@ -29,12 +29,9 @@ func GenerateShares(minimum int, shares int, prime *big.Int) (*big.Int, []*utils
 		poly[i] = coefficients
 	}
 
+	// Overide the random crap X so we can produce an authentic SplitKey
 	for i := 0; i < shares; i++ {
-		randXValue, e := utils.GenerateRandomBigInt(32)
-		if e != nil {
-			return nil, nil, e
-		}
-		point := randXValue
+		point := big.NewInt(int64(i + 1))
 		points[i] = utils.EvaluatePolynomial(poly, point, prime)
 	}
 
